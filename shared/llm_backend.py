@@ -127,17 +127,29 @@ class LLMBackend:
         return self._fallback_response(prompt)
 
     def _generate_openai(self, prompt: str, max_tokens: int, temperature: float, model: str = "gpt-3.5-turbo") -> str:
-        try:
-            resp = self.openai_client.chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=max_tokens,
-                temperature=temperature,
-            )
-            return resp.choices[0].message.content.strip()
-        except Exception as e:
-            print(f"OpenAI generation error: {e}")
-            return self._fallback_response(prompt)
+        import time
+        for attempt in range(3):
+            try:
+                resp = self.openai_client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                )
+                return resp.choices[0].message.content.strip()
+            except Exception as e:
+                msg = str(e)
+                if "content_filter" in msg or "high risk" in msg:
+                    # Prompt triggered content filter — not retryable
+                    return self._fallback_response(prompt)
+                if "429" in msg or "rate_limit" in msg.lower():
+                    wait = 60 * (attempt + 1)
+                    time.sleep(wait)
+                    continue
+                print(f"LLM generation error (attempt {attempt + 1}): {e}")
+                if attempt == 2:
+                    return self._fallback_response(prompt)
+        return self._fallback_response(prompt)
 
     def _generate_local(self, prompt: str, max_tokens: int, temperature: float) -> str:
         if self.model is None or self.tokenizer is None:

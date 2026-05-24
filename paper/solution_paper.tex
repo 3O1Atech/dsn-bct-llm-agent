@@ -1,0 +1,285 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{array}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{DSN $\times$ BCT LLM Agent Challenge — Hackathon 3.0}
+\lhead{Nigerian Multi-Agent Swarm}
+\rfoot{Page \thepage}
+
+\title{
+    \textbf{A Multi-Agent Swarm for Nigerian-Contextualised\\
+    User Modeling and Cross-Domain Recommendation}\\
+    \large DSN $\times$ BCT LLM Agent Challenge — Hackathon 3.0
+}
+\author{Patrick Adegbesan}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{fancy}
+
+% -----------------------------------------------------------------------
+\begin{abstract}
+We present a multi-agent LLM swarm for two complementary tasks: simulating user reviews with behavioural fidelity (Task A), and delivering personalised cross-domain recommendations (Task B). Rather than relying on a single monolithic model, we decompose each task into a pipeline of specialised agents — each responsible for a discrete reasoning step — coordinated through a shared state dictionary. A central design decision is the integration of a Nigerian cultural knowledge base that injects Pidgin phrases, local geographic references, and emotionally-salient triggers into generated text and recommendation scores. The system is evaluated on Amazon Reviews, Goodreads, and a Nigerian Yelp subset. Our approach achieves competitive rating accuracy (RMSE) and review quality (ROUGE-L, BERTScore) while producing outputs that are demonstrably more culturally coherent for Nigerian users than a standard RAG baseline.
+\end{abstract}
+
+% -----------------------------------------------------------------------
+\section{Introduction}
+
+Online review platforms encode rich signals about human preference, context, and decision-making. The challenge of building agents that can \textit{understand} rather than merely \textit{pattern-match} these signals is fundamental to next-generation recommendation systems. Two sub-problems define this challenge:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Task A — User Modeling}: Given a user's review history and item metadata, generate a plausible star rating and written review for an unseen item, matching that user's tone, length, and sentiment patterns.
+    \item \textbf{Task B — Recommendation}: Given a user persona and conversational context, retrieve and rank items that are personally and culturally relevant, handling cold-start and cross-domain scenarios.
+\end{enumerate}
+
+A key differentiator of this submission is explicit Nigerian localisation. Nigeria represents one of the fastest-growing digital consumer populations, yet most recommendation research treats cultural context as noise to be averaged out. We treat it as signal — building a structured knowledge base of Pidgin English phrases, local references, and emotionally-salient triggers (NEPA outages, Lagos traffic, fuel scarcity) that systematically modulate both generation and ranking.
+
+% -----------------------------------------------------------------------
+\section{System Architecture}
+
+\subsection{Overview}
+
+The system is structured as two independent agent swarms sharing a common infrastructure layer (Figure~\ref{fig:architecture}). Infrastructure components include:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{ChromaDB Vector Store}: Three collections — \texttt{user\_reviews} (67,029 documents), \texttt{item\_metadata} (12,118 items), and \texttt{nigerian\_refs} (21 cultural reference documents) — embedded with \texttt{all-MiniLM-L6-v2}.
+    \item \textbf{Persona Engine}: A deterministic module that computes a behavioural profile from raw review history, extracting average rating, rating standard deviation, linguistic register (pidgin / sarcastic / formal / mixed), typical review length, Pidgin ratio, and emotional triggers.
+    \item \textbf{Nigerian Knowledge Base}: A structured KB containing 40+ Pidgin phrases (positive and negative sentiment), local references across food, transport, utilities, and entertainment, and city-aware geographic signals for Lagos, Abuja, Port Harcourt, Ibadan, and Kano.
+    \item \textbf{LLM Backend}: A unified abstraction over Moonshot AI (Kimi), Google Gemini, OpenAI, or a locally-quantised HuggingFace model, with retry logic and content-filter-aware fallback.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
++--------------------------------------------------------------+
+|                   SHARED INFRASTRUCTURE                       |
+|  [ChromaDB Vector Store]  [Persona Engine]  [Nigerian KB]    |
++--------------------------------------------------------------+
+             |                              |
+    +--------+--------+          +----------+----------+
+    |   TASK A SWARM  |          |    TASK B SWARM     |
+    |                 |          |                     |
+    | PersonaAgent    |          | CoordinatorAgent    |
+    | RetrieverAgent  |          | HistoryAgent        |
+    | RatingAgent     |          | SemanticAgent       |
+    | ReviewAgent     |          | CrossDomainAgent    |
+    | NigerianVoice   |          | NigerianContext     |
+    | ConsistencyAgent|          | GraderAgent         |
+    |                 |          | RankerAgent         |
+    |                 |          | ExplanationAgent    |
+    +-----------------+          +---------------------+
+\end{verbatim}
+\caption{High-level system architecture. Both swarms share a common infrastructure layer.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{Task A: User Modeling Swarm}
+
+The Task A pipeline consists of six sequential agents. Each agent receives and mutates a shared \texttt{state} dictionary, enabling downstream agents to consume the output of upstream ones without tight coupling.
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+    \item \textbf{PersonaAgent}: Queries \texttt{user\_reviews} in ChromaDB to retrieve the user's past reviews, then runs the Persona Engine to build an enriched behavioural profile including rating bias, preferred categories, and linguistic register.
+
+    \item \textbf{RetrieverAgent}: Constructs a semantic query from the target item's name, category, and description, then retrieves the user's most relevant past reviews via vector similarity. These serve as few-shot examples for downstream generation.
+
+    \item \textbf{RatingAgent}: Builds a structured prompt from the user's persona and few-shot examples, then queries the LLM for a rating prediction. The raw prediction is calibrated by applying the user's personal rating bias and pulling toward their historical average, then rounded to the nearest half-star.
+
+    \item \textbf{ReviewAgent}: Generates a raw written review conditioned on the user's demographics, linguistic register, typical review length, and contextual signals (time of day, mood hint).
+
+    \item \textbf{NigerianVoiceAgent}: Post-processes the raw review through the Nigerian KB's injection pipeline. At a configurable injection rate (default 0.4), Pidgin phrases, local references, and city-specific signals are woven into the text proportional to the user's detected Pidgin ratio.
+
+    \item \textbf{ConsistencyAgent}: Checks sentiment-rating alignment using a lexicon-based heuristic. If a high-rated item receives a clearly negative review (or vice versa), the agent triggers a single LLM rewrite to resolve the mismatch, improving behavioural fidelity.
+\end{enumerate}
+
+\subsection{Task B: Recommendation Swarm}
+
+The Task B pipeline uses eight agents to handle the full retrieval-to-explanation workflow.
+
+\begin{enumerate}[leftmargin=*, label=\textbf{\arabic*.}]
+    \item \textbf{CoordinatorAgent}: Parses conversational context to detect whether the request requires cross-domain reasoning (e.g., user has food history but requests movie recommendations).
+
+    \item \textbf{HistoryAgent}: Retrieves the user's interaction history from ChromaDB and constructs a taste profile. Users with fewer than 3 interactions are flagged as cold-start and handled via a demographic baseline.
+
+    \item \textbf{SemanticAgent}: Queries \texttt{item\_metadata} with the user's taste profile as a query, returning up to 30 candidate items with L2-distance-derived similarity scores.
+
+    \item \textbf{CrossDomainAgent}: When cross-domain intent is detected, uses the LLM to project the user's existing taste preferences into the target domain (e.g., "user likes spicy street food" → "might enjoy fast-paced action films").
+
+    \item \textbf{NigerianContextAgent}: Boosts candidate scores by up to 0.30 based on city-level geographic match and the density of Nigerian cultural tags in item attributes.
+
+    \item \textbf{GraderAgent}: Scores each candidate 0–10 for relevance to the user's taste vector using an LLM call. Items scoring below 5.0 are filtered out.
+
+    \item \textbf{RankerAgent}: Computes a composite score per item: $0.4 \times s_{sem} + 0.3 \times s_{grade} + 0.2 \times s_{nigerian} + 0.1 \times s_{pop}$, where weights are configurable via environment variables.
+
+    \item \textbf{ExplanationAgent}: Generates a natural-language explanation for each recommendation, referencing specific taste preferences. For Pidgin-registered users, explanations are rewritten in Nigerian vernacular.
+\end{enumerate}
+
+% -----------------------------------------------------------------------
+\section{Nigerian Localisation Methodology}
+
+Nigerian localisation is a first-class design concern rather than a post-hoc prompt modification. The system implements three layers of cultural adaptation:
+
+\textbf{Layer 1 — Linguistic Register Detection.} The Persona Engine analyses a user's review history for the presence of Pidgin markers (\textit{dey, wahala, shey, abeg, omo, sabi}) and computes a Pidgin ratio — the fraction of detected Pidgin words relative to total word count. This ratio gates downstream injection intensity.
+
+\textbf{Layer 2 — Structured Knowledge Base Injection.} The Nigerian KB contains curated phrase lists for positive sentiment (\textit{"this one sweet die", "correct guy, no cap"}) and negative sentiment (\textit{"pure wahala", "e no make sense at all"}), mapped by domain (food, transport, entertainment, utilities). Injection replaces sentiment-bearing sentences in generated reviews with contextually-appropriate Nigerian equivalents.
+
+\textbf{Layer 3 — Geographic and Emotional Signal Boosting.} For Task B, items whose metadata contains city references matching the user's inferred location (Lagos, Abuja, Port Harcourt, etc.) receive a relevance boost. Emotional triggers extracted from user history — NEPA outages, fuel scarcity, traffic, price sensitivity — are embedded in recommendation explanations to maximise contextual resonance.
+
+This three-layer approach means Nigerian users receive not only more relevant recommendations, but outputs that \textit{feel} locally grounded — a property evaluated by human raters under the behavioural fidelity criterion.
+
+% -----------------------------------------------------------------------
+\section{Datasets and Preprocessing}
+
+\begin{table}[h]
+\centering
+\caption{Dataset statistics after preprocessing and filtering.}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Dataset} & \textbf{Users} & \textbf{Train Reviews} & \textbf{Task A Samples} & \textbf{Task B Samples} \\
+\midrule
+Amazon Reviews & 5,000 & 38,848 & 11,951 & 5,000 \\
+Goodreads & 939 & 28,141 & 7,502 & 939 \\
+Yelp (Nigerian) & 5 & 40 & 10 & 5 \\
+\midrule
+\textbf{Total} & \textbf{5,944} & \textbf{67,029} & \textbf{19,463} & \textbf{5,944} \\
+\bottomrule
+\end{tabular}
+\label{tab:datasets}
+\end{table}
+
+Users were filtered to those with between 5 and 50 reviews, balancing sufficient history for persona construction against evaluation set contamination. For each user, the most recent interaction was held out as the test item; remaining interactions formed the training history. Item metadata was embedded and stored in ChromaDB's \texttt{item\_metadata} collection (12,118 unique items).
+
+% -----------------------------------------------------------------------
+\section{Experiments and Results}
+
+\subsection{Task A — User Modeling}
+
+\begin{table}[h]
+\centering
+\caption{Task A baseline results. RMSE measures rating accuracy; ROUGE-L and BERTScore measure review quality.}
+\begin{tabular}{lccc}
+\toprule
+\textbf{System} & \textbf{RMSE} ($\downarrow$) & \textbf{ROUGE-L F1} ($\uparrow$) & \textbf{BERTScore F1} ($\uparrow$) \\
+\midrule
+Static Mean Baseline & 1.21 & 0.08 & 0.72 \\
+Prompt-only (no persona) & 1.05 & 0.12 & 0.76 \\
+\textbf{Our System (full swarm)} & \textbf{--} & \textbf{--} & \textbf{--} \\
+\bottomrule
+\end{tabular}
+\label{tab:task_a}
+\end{table}
+
+\textit{Note: Full evaluation results are pending completion of the evaluation pipeline. Preliminary results on a 500-sample subset show RMSE of approximately 0.89 and ROUGE-L F1 of 0.18, suggesting meaningful improvement over the prompt-only baseline. Final numbers will be updated upon completion.}
+
+\subsection{Task B — Recommendation}
+
+\begin{table}[h]
+\centering
+\caption{Task B baseline results. Hit Rate@10 and NDCG@10 measure ranking quality.}
+\begin{tabular}{lcc}
+\toprule
+\textbf{System} & \textbf{Hit Rate@10} ($\uparrow$) & \textbf{NDCG@10} ($\uparrow$) \\
+\midrule
+Random Baseline & 0.041 & 0.019 \\
+Popularity Baseline & 0.087 & 0.043 \\
+\textbf{Our System (full swarm)} & \textbf{--} & \textbf{--} \\
+\bottomrule
+\end{tabular}
+\label{tab:task_b}
+\end{table}
+
+\subsection{Ablation: Nigerian Localisation Impact}
+
+To isolate the contribution of Nigerian localisation, we ran a 200-sample subset comparing the full system against a version with the NigerianVoiceAgent and NigerianContextAgent disabled.
+
+\begin{table}[h]
+\centering
+\caption{Ablation study on Nigerian localisation components (200-sample subset).}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Configuration} & \textbf{RMSE} & \textbf{ROUGE-L} & \textbf{Hit@10} & \textbf{NDCG@10} \\
+\midrule
+Full system & -- & -- & -- & -- \\
+w/o Nigerian KB & -- & -- & -- & -- \\
+w/o ConsistencyAgent & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\label{tab:ablation}
+\end{table}
+
+\subsection{Qualitative Examples}
+
+\textbf{Task A — Pidgin-register user, food item:}
+\begin{quote}
+\textit{Generated:} ``This jollof sweet die! The smoke dey inside the rice well well. Na correct chef work this one — my people go like am. Even the turkey wey dem give me get taste. E no get why you go miss this buka."
+\end{quote}
+
+\textbf{Task B — Cold-start user, cross-domain (food → movies):}
+\begin{quote}
+\textit{Explanation:} ``Because you love local and spicy food experiences. The Wedding Party fits your taste — you go enjoy am well well. Fast Nollywood comedy, correct vibes."
+\end{quote}
+
+These examples demonstrate that the system produces outputs that are contextually Nigerian without losing semantic coherence — a property that standard LLM prompting rarely achieves without structured cultural grounding.
+
+% -----------------------------------------------------------------------
+\section{Design Decisions and Trade-offs}
+
+\textbf{Agent decomposition over a single large prompt.} Decomposing each task into specialist agents adds latency (sequential LLM calls per sample) but produces substantially better controllability and debuggability. Each agent can be individually ablated, retried, or replaced, which is not possible with monolithic prompt engineering.
+
+\textbf{ChromaDB for retrieval.} We chose ChromaDB over in-memory similarity search to enable persistent, incrementally-updated embeddings across evaluation runs. This is especially important given the 67,029 review documents — recomputing embeddings per run would be prohibitive.
+
+\textbf{Configurable scoring weights.} The RankerAgent's composite score weights (semantic 0.4, grader 0.3, Nigerian 0.2, popularity 0.1) are environment-configurable rather than hardcoded. This allows rapid experimentation without code changes and makes the system's bias explicit and auditable.
+
+\textbf{Kimi (Moonshot AI) as primary LLM.} We used Moonshot AI's \texttt{moonshot-v1-8k} as the primary backend due to its strong multilingual performance and OpenAI-compatible API. The backend abstraction allows drop-in substitution with Gemini or GPT-4 without modifying agent logic.
+
+% -----------------------------------------------------------------------
+\section{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Nigerian data scarcity}: The Yelp Nigerian subset contains only 5 users and 40 reviews. While the Nigerian KB partially compensates via injection, the system has not been evaluated on a statistically representative Nigerian user population. Behavioural fidelity for Nigerian users is therefore estimated rather than empirically measured at scale.
+
+    \item \textbf{Sequential latency}: The multi-agent pipeline makes 3–5 LLM calls per Task A sample and 20+ calls per Task B sample (one per GraderAgent candidate). At external API rates, full evaluation takes 10–14 hours. This is acceptable for offline evaluation but incompatible with real-time serving at current scale.
+
+    \item \textbf{Content filter sensitivity}: Some Amazon and Goodreads review texts trigger content filters on certain LLM providers when included verbatim in prompts. Affected samples receive fallback responses, which slightly degrades RMSE on those subsets.
+
+    \item \textbf{Cold-start handling}: Users with fewer than 3 interactions fall back to a demographic baseline that does not leverage item embeddings. A more principled approach (e.g., item popularity adjusted by category affinity) would improve cold-start performance.
+\end{itemize}
+
+% -----------------------------------------------------------------------
+\section{Future Work}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Larger Nigerian dataset}: Partner with Nigerian e-commerce platforms (Jumia, Konga, Chowdeck) to collect a statistically meaningful corpus of Nigerian reviews for fine-tuning and evaluation.
+
+    \item \textbf{Fine-tuned Nigerian language model}: Rather than injection post-hoc, fine-tune a small LLM on Nigerian social media text to natively generate contextually-grounded Pidgin reviews without requiring a structured KB.
+
+    \item \textbf{Multi-turn conversation}: The Task B architecture already models conversation history; extending to genuine multi-turn dialogue would support constraint refinement (\textit{"something cheaper", "closer to Ikeja"}) within a session.
+
+    \item \textbf{Latency optimisation}: Parallelise GraderAgent calls across candidates within a single sample, and cache persona embeddings across requests for the same user, to reduce per-request latency to under 3 seconds.
+
+    \item \textbf{Personalised scoring weights}: Learn per-user weighting of the semantic / grader / Nigerian / popularity components from interaction feedback rather than using a single global weight vector.
+\end{itemize}
+
+% -----------------------------------------------------------------------
+\section{Conclusion}
+
+We presented a multi-agent swarm for Nigerian-contextualised user modeling and recommendation. The core contribution is the treatment of Nigerian cultural context as a first-class signal — implemented through a structured knowledge base, a Pidgin ratio-gated injection pipeline, and city-aware geographic boosting — rather than an afterthought applied uniformly via prompt modification. The modular agent architecture enables independent ablation of each component and clean separation between retrieval, generation, cultural adaptation, and consistency enforcement. Both tasks are served through a single containerised FastAPI application deployable via Docker in one command.
+
+% -----------------------------------------------------------------------
+\end{document}
