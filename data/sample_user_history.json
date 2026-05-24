@@ -1,0 +1,109 @@
+{
+  "users": [
+    {
+      "user_id": "lagos_hustler_01",
+      "demographics": "25yo, Lagos Island",
+      "linguistic_register": "pidgin",
+      "rating_bias": 0.3,
+      "category_preferences": ["food", "transport"],
+      "typical_review_length": "short",
+      "emotional_triggers": ["NEPA", "traffic"],
+      "reviews": [
+        {"item_id": "rest_001", "domain": "yelp", "rating": 5, "text": "This jollof sweet die! Smoke dey enter the rice well well. Correct guy!"},
+        {"item_id": "rest_002", "domain": "yelp", "rating": 2, "text": "Wahala full ground. I wait one hour for amala and the soup no sweet. Nonsense!"},
+        {"item_id": "rest_003", "domain": "yelp", "rating": 4, "text": "Suya spicy well well. The mallam sabi work. Abeg try am."},
+        {"item_id": "book_001", "domain": "goodreads", "rating": 3, "text": "The book make sense small but too much grammar. I no fit finish am."},
+        {"item_id": "mov_001", "domain": "movies", "rating": 5, "text": "The Wedding Party show me shege! I laugh sotey I fall chair. Nollywood don mature."},
+        {"item_id": "rest_004", "domain": "yelp", "rating": 1, "text": "No dey work at all. NEPA take light, fan no blow, food get mosquito. Wahala!"},
+        {"item_id": "amaz_001", "domain": "amazon", "rating": 4, "text": "Power bank correct. I charge my phone three times. But delivery slow like danfo for Third Mainland Bridge."},
+        {"item_id": "rest_005", "domain": "yelp", "rating": 3, "text": "Pepper soup get heat but meat too small. Omo, I still enjoy am sha."},
+        {"item_id": "book_002", "domain": "goodreads", "rating": 2, "text": "Too boring. I prefer when gist dey flow like BRT lane. This one dey stuck for traffic."},
+        {"item_id": "amaz_002", "domain": "amazon", "rating": 5, "text": "Bluetooth speaker loud pass Lagos market! Burna Boy dey blast for my room. Sweet die."}
+      ]
+    },
+    {
+      "user_id": "abuja_professional_02",
+      "demographics": "34yo, Maitama, Abuja",
+      "linguistic_register": "formal",
+      "rating_bias": -0.2,
+      "category_preferences": ["fine_dining", "tech", "books"],
+      "typical_review_length": "long",
+      "emotional_triggers": ["service_quality", "punctuality"],
+      "reviews": [
+        {"item_id": "rest_006", "domain": "yelp", "rating": 4, "text": "An excellent dining experience. The chef's interpretation of contemporary Nigerian cuisine was remarkable. Service was attentive and the wine pairing thoughtful."},
+        {"item_id": "amaz_003", "domain": "amazon", "rating": 3, "text": "The laptop performs adequately for office tasks, though the battery life falls short of manufacturer claims. Build quality is solid. Would recommend for light productivity."},
+        {"item_id": "book_003", "domain": "goodreads", "rating": 5, "text": "A masterful narrative on post-colonial identity. The author weaves Lagos and London with precision. Essential reading for anyone interested in the African diaspora experience."},
+        {"item_id": "rest_007", "domain": "yelp", "rating": 2, "text": "Disappointing. The reservation system failed, and we waited forty minutes despite booking two weeks in advance. The ambience does not compensate for operational inefficiency."},
+        {"item_id": "mov_002", "domain": "movies", "rating": 4, "text": "King of Boys offers a compelling political thriller deeply rooted in Nigerian power dynamics. The cinematography and performances elevate it beyond typical Nollywood fare."},
+        {"item_id": "amaz_004", "domain": "amazon", "rating": 4, "text": "Reliable wireless mouse. Ergonomic design suitable for extended use. Delivery from Jumia was prompt within Abuja city limits."},
+        {"item_id": "book_004", "domain": "goodreads", "rating": 3, "text": "The historical account is thorough but occasionally dry. More analysis of the Biafran economic impact would have strengthened the central thesis."},
+        {"item_id": "rest_008", "domain": "yelp", "rating": 5, "text": "Outstanding. The tasting menu showcased Northern Nigerian ingredients with French technique. The sommelier's knowledge of South African wines was impressive."},
+        {"item_id": "mov_003", "domain": "movies", "rating": 2, "text": "Poorly edited and the plot lacked coherence. While the subject matter is important, the execution does not do justice to the source material."},
+        {"item_id": "amaz_005", "domain": "amazon", "rating": 4, "text": "Noise-cancelling headphones effective for Abuja flight paths. Comfortable for long virtual meetings. Slightly pricey but justified by performance."}
+      ]
+    },
+    {
+      "user_id": "phc_foodie_03",
+      "demographics": "28yo, Port Harcourt",
+      "linguistic_register": "mixed",
+      "rating_bias": 0.1,
+      "category_preferences": ["food", "seafood", "entertainment"],
+      "typical_review_length": "medium",
+      "emotional_triggers": ["freshness", "spice_level"],
+      "reviews": [
+        {"item_id": "rest_009", "domain": "yelp", "rating": 5, "text": "Best bole and fish in PHC! 🔥🔥 The pepper sauce is wicked. Fresh catch straight from the river. I dey lick fingers!"},
+        {"item_id": "rest_010", "domain": "yelp", "rating": 3, "text": "Afang soup okay but them no put enough periwinkle. For this price? Hmm. 😒"},
+        {"item_id": "mov_004", "domain": "movies", "rating": 4, "text": "Action packed! 💥 The car chase for Lagos-Ibadan expressway scene was mad. I love Nollywood when them try like this."},
+        {"item_id": "amaz_006", "domain": "amazon", "rating": 4, "text": "Air fryer is a lifesaver! 🙌 Oil less frying and my plantain still dey crisp. PHC humidity no fit spoil am quick."},
+        {"item_id": "book_005", "domain": "goodreads", "rating": 2, "text": "Too slow. I sleep off two times. 📚💤 Maybe I no get the patience for literary fiction."},
+        {"item_id": "rest_011", "domain": "yelp", "rating": 5, "text": "Seafood platter EPIC! 🦐🦀🐟 Everything fresh, everything fire. Their pepper soup clear my sinuses well well."},
+        {"item_id": "amaz_007", "domain": "amazon", "rating": 3, "text": "Blender works but noise too much. My neighbour wan complain. 😅 For smoothies e dey okay sha."},
+        {"item_id": "mov_005", "domain": "movies", "rating": 3, "text": "BBNaija finale party movie. Some scenes funny, some forced. Average weekend watch. 🤷‍♀️"},
+        {"item_id": "rest_012", "domain": "yelp", "rating": 1, "text": "Food poisoning! 🤮 Never again. PHC get better places abeg. Them need close down."},
+        {"item_id": "book_006", "domain": "goodreads", "rating": 4, "text": "Chimamanda no dey disappoint! ✅ Americanah capture that returnee struggle perfectly. I feel am for my bone."}
+      ]
+    },
+    {
+      "user_id": "ibadan_student_04",
+      "demographics": "21yo, University of Ibadan",
+      "linguistic_register": "sarcastic",
+      "rating_bias": -0.4,
+      "category_preferences": ["budget_food", "tech", "movies"],
+      "typical_review_length": "short",
+      "emotional_triggers": ["price", "queue"],
+      "reviews": [
+        {"item_id": "rest_013", "domain": "yelp", "rating": 2, "text": "Wow, Indomie and egg for 1500 naira. Such innovation. Much culinary excellence. 👏"},
+        {"item_id": "amaz_008", "domain": "amazon", "rating": 3, "text": "Power bank that lasts 2 hours. Revolutionary technology. Take my money."},
+        {"item_id": "mov_006", "domain": "movies", "rating": 1, "text": "Oscar-worthy CGI of a flying yam. Hollywood should be worried."},
+        {"item_id": "rest_014", "domain": "yelp", "rating": 4, "text": "Okay okay, this one actually slaps. Amala and ewedu for 800 naira? UI students we eat today!"},
+        {"item_id": "book_007", "domain": "goodreads", "rating": 3, "text": "Textbook that costs 15k and has 400 pages of copy-paste from Wikipedia. Education!"},
+        {"item_id": "amaz_009", "domain": "amazon", "rating": 5, "text": "Used Android phone that works. Miracles still happen in Ibadan market. Praise be."},
+        {"item_id": "rest_015", "domain": "yelp", "rating": 2, "text": "One meat, three bones. The maths no add up but hunger no get choice."},
+        {"item_id": "mov_007", "domain": "movies", "rating": 4, "text": "Unexpectedly good. Like finding N100 in your old jeans. Nollywood thriller wey make sense? Shock me."},
+        {"item_id": "amaz_010", "domain": "amazon", "rating": 2, "text": "Earphones where left ear dey work and right ear dey pray. Stereo experience of life."},
+        {"item_id": "book_008", "domain": "goodreads", "rating": 4, "text": "Short stories wey fit read for one lecture break. Smart choice, better than scrolling Twitter."}
+      ]
+    },
+    {
+      "user_id": "kano_parent_05",
+      "demographics": "40yo, Kano",
+      "linguistic_register": "formal",
+      "rating_bias": 0.0,
+      "category_preferences": ["family", "education", "religious_books"],
+      "typical_review_length": "medium",
+      "emotional_triggers": ["family_values", "morality"],
+      "reviews": [
+        {"item_id": "rest_016", "domain": "yelp", "rating": 4, "text": "A family-friendly environment with separate seating. The tuwo shinkafa was well-prepared and the miyan kuka had authentic northern flavor. Suitable for children."},
+        {"item_id": "book_009", "domain": "goodreads", "rating": 5, "text": "An important Islamic history text, well-researched and respectful. I have recommended it to my children's school library. The print quality is excellent."},
+        {"item_id": "amaz_011", "domain": "amazon", "rating": 4, "text": "Educational tablet for my daughter. Pre-loaded with Quranic recitations and maths games. Parental controls work well. Good value for money."},
+        {"item_id": "mov_008", "domain": "movies", "rating": 3, "text": "The family comedy was generally wholesome, though some scenes could have been more modest in dress. The message about unity was commendable."},
+        {"item_id": "rest_017", "domain": "yelp", "rating": 2, "text": "Unsatisfactory. The restaurant plays loud music and the environment is not conducive for family dining. Food was average at best."},
+        {"item_id": "book_010", "domain": "goodreads", "rating": 4, "text": "A practical guide to child-rearing in Northern Nigeria. The author addresses modern challenges while respecting traditional values. Very insightful."},
+        {"item_id": "amaz_012", "domain": "amazon", "rating": 5, "text": "Reliable generator for home use. Powers fans and lights during Kano power outages. Fuel consumption is reasonable. Essential for any family."},
+        {"item_id": "mov_009", "domain": "movies", "rating": 2, "text": "Too much violence for a film marketed as family entertainment. I would not recommend this for young viewers despite the Nollywood star cast."},
+        {"item_id": "rest_018", "domain": "yelp", "rating": 4, "text": "Clean and orderly. The kilishi was excellent and packed well for travel. Staff were courteous and respectful. Will return with my brothers."},
+        {"item_id": "book_011", "domain": "goodreads", "rating": 5, "text": "A beautifully illustrated Hausa-English dictionary for children. My youngest now knows fifty new words. Highly recommended for northern families."}
+      ]
+    }
+  ]
+}

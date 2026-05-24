@@ -1,0 +1,164 @@
+{
+  "items": [
+    {
+      "item_id": "rest_001",
+      "name": "Mama Put Jollof Spot",
+      "domain": "yelp",
+      "category": "food",
+      "description": "Local buka serving smoky party jollof and grilled turkey",
+      "attributes": {"cuisine": "Nigerian", "price_range": "₦", "location": "Yaba", "tags": ["jollof", "local", "cheap", "Lagos"]}
+    },
+    {
+      "item_id": "rest_002",
+      "name": "Suya Republic",
+      "domain": "yelp",
+      "category": "food",
+      "description": "Premium suya joint with assorted meats and spicy yaji",
+      "attributes": {"cuisine": "Nigerian", "price_range": "₦₦", "location": "Lekki", "tags": ["suya", "meat", "spicy", "Lagos"]}
+    },
+    {
+      "item_id": "rest_003",
+      "name": "Calabar Kitchen",
+      "domain": "yelp",
+      "category": "food",
+      "description": "Authentic Calabar dishes, fresh seafood and afang soup",
+      "attributes": {"cuisine": "Nigerian", "price_range": "₦₦", "location": "Port Harcourt", "tags": ["seafood", "afang", "fresh", "PHC"]}
+    },
+    {
+      "item_id": "rest_004",
+      "name": "Amala Skye",
+      "domain": "yelp",
+      "category": "food",
+      "description": "Ibadan famous amala and ewedu with assorted meats",
+      "attributes": {"cuisine": "Nigerian", "price_range": "₦", "location": "Ibadan", "tags": ["amala", "ewedu", "cheap", "Ibadan"]}
+    },
+    {
+      "item_id": "rest_005",
+      "name": "Miyan Kuka Palace",
+      "domain": "yelp",
+      "category": "food",
+      "description": "Northern Nigerian delicacies, tuwo and rich soups",
+      "attributes": {"cuisine": "Nigerian", "price_range": "₦", "location": "Kano", "tags": ["tuwo", "northern", "family", "Kano"]}
+    },
+    {
+      "item_id": "mov_001",
+      "name": "The Wedding Party",
+      "domain": "movies",
+      "category": "movies",
+      "description": "Nollywood romantic comedy about a chaotic Lagos wedding",
+      "attributes": {"genre": ["romance", "comedy"], "price_range": "₦", "location": "Lagos", "tags": ["Nollywood", "wedding", "Lagos", "comedy"]}
+    },
+    {
+      "item_id": "mov_002",
+      "name": "King of Boys",
+      "domain": "movies",
+      "category": "movies",
+      "description": "Political thriller exploring power and crime in Lagos",
+      "attributes": {"genre": ["thriller", "crime"], "price_range": "₦₦", "location": "Lagos", "tags": ["Nollywood", "political", "intense", "Lagos"]}
+    },
+    {
+      "item_id": "mov_003",
+      "name": "Lionheart",
+      "domain": "movies",
+      "category": "movies",
+      "description": "Family drama about a woman taking over her father's transport business",
+      "attributes": {"genre": ["drama", "family"], "price_range": "₦", "location": "Enugu", "tags": ["Nollywood", "family", "Netflix", "Enugu"]}
+    },
+    {
+      "item_id": "mov_004",
+      "name": "Blood Sisters",
+      "domain": "movies",
+      "category": "movies",
+      "description": "Thriller miniseries about two friends on the run",
+      "attributes": {"genre": ["thriller", "drama"], "price_range": "₦", "location": "Lagos", "tags": ["Nollywood", "Netflix", "suspense", "Lagos"]}
+    },
+    {
+      "item_id": "mov_005",
+      "name": "Citation",
+      "domain": "movies",
+      "category": "movies",
+      "description": "Drama tackling sexual harassment in a Nigerian university",
+      "attributes": {"genre": ["drama", "social"], "price_range": "₦", "location": "Ile-Ife", "tags": ["Nollywood", "university", "social", "Ife"]}
+    },
+    {
+      "item_id": "book_001",
+      "name": "Stay With Me",
+      "domain": "goodreads",
+      "category": "books",
+      "description": "Ayobami Adebayo's novel about love and loss in 1980s Nigeria",
+      "attributes": {"genre": ["fiction", "literary"], "price_range": "₦₦", "location": "Nigeria", "tags": ["literary", "Yoruba", "family", "Nigeria"]}
+    },
+    {
+      "item_id": "book_002",
+      "name": "Americanah",
+      "domain": "goodreads",
+      "category": "books",
+      "description": "Chimamanda Ngozi Adichie's epic on race, identity and migration",
+      "attributes": {"genre": ["fiction", "literary"], "price_range": "₦₦", "location": "Nigeria", "tags": ["diaspora", "Igbo", "identity", "Nigeria"]}
+    },
+    {
+      "item_id": "book_003",
+      "name": "The Secret Lives of Baba Segi's Wives",
+      "domain": "goodreads",
+      "category": "books",
+      "description": "Lola Shoneyin's tale of polygamy and secrets",
+      "attributes": {"genre": ["fiction", "drama"], "price_range": "₦₦", "location": "Nigeria", "tags": ["polygamy", "family", "drama", "Nigeria"]}
+    },
+    {
+      "item_id": "book_004",
+      "name": "My Sister, the Serial Killer",
+      "domain": "goodreads",
+      "category": "books",
+      "description": "Oyinkan Braithwaite's darkly comic thriller",
+      "attributes": {"genre": ["thriller", "comedy"], "price_range": "₦₦", "location": "Lagos", "tags": ["thriller", "Lagos", "dark_comedy", "Nigeria"]}
+    },
+    {
+      "item_id": "book_005",
+      "name": "Smallie: The NEPA Years",
+      "domain": "goodreads",
+      "category": "books",
+      "description": "Humorous memoir about growing up with constant power outages",
+      "attributes": {"genre": ["memoir", "humor"], "price_range": "₦", "location": "Nigeria", "tags": ["memoir", "NEPA", "humor", "Nigeria"]}
+    },
+    {
+      "item_id": "amaz_001",
+      "name": "Anker 20000mAh Power Bank",
+      "domain": "amazon",
+      "category": "electronics",
+      "description": "High capacity power bank for Nigerian power outage survival",
+      "attributes": {"category": "electronics", "price_range": "₦₦", "location": "Nigeria", "tags": ["power", "essential", "outage", "Nigeria"]}
+    },
+    {
+      "item_id": "amaz_002",
+      "name": "Bluetooth Party Speaker",
+      "domain": "amazon",
+      "category": "electronics",
+      "description": "Loud portable speaker with bass for owambe parties",
+      "attributes": {"category": "electronics", "price_range": "₦₦", "location": "Nigeria", "tags": ["music", "party", "loud", "Nigeria"]}
+    },
+    {
+      "item_id": "amaz_003",
+      "name": "Rechargeable Standing Fan",
+      "domain": "amazon",
+      "category": "home",
+      "description": "18-inch rechargeable fan for hot Nigerian nights",
+      "attributes": {"category": "home", "price_range": "₦₦", "location": "Nigeria", "tags": ["cooling", "essential", "hot", "Nigeria"]}
+    },
+    {
+      "item_id": "amaz_004",
+      "name": "Solar Phone Charger",
+      "domain": "amazon",
+      "category": "electronics",
+      "description": "Eco-friendly solar charger for rural and urban use",
+      "attributes": {"category": "electronics", "price_range": "₦", "location": "Nigeria", "tags": ["solar", "eco", "rural", "Nigeria"]}
+    },
+    {
+      "item_id": "amaz_005",
+      "name": "Noise-Cancelling Headphones",
+      "domain": "amazon",
+      "category": "electronics",
+      "description": "Block out generator noise and Lagos traffic",
+      "attributes": {"category": "electronics", "price_range": "₦₦₦", "location": "Nigeria", "tags": ["quiet", "urban", "premium", "Nigeria"]}
+    }
+  ]
+}

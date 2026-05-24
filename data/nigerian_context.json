@@ -1,0 +1,31 @@
+{
+  "pidgin_phrases": {
+    "positive": ["sweet die", "make sense", "correct guy", "na baba", "e get as e be", "chop life", "gbas gbos", "no be small thing", "e too choke"],
+    "negative": ["wahala", "nonsense", "no dey work", "yeye", "shege", "buru", "na lie", "e no pure", "fail am"],
+    "neutral": ["abeg", "how far", "omo", "sha", "sotey", "well well", "small small", "dey there", "no wahala"]
+  },
+  "local_references": {
+    "food": ["jollof", "amala", "suya", "pepper soup", "bole", "tuwo", "miyan kuka", "afang", "egusi", "pounded yam"],
+    "transport": ["danfo", "okada", "BRT", "keke", "molue", "uber", "bolt", "Lagos-Ibadan expressway", "Third Mainland Bridge"],
+    "infra": ["NEPA", "PHCN", "MTN", "fuel scarcity", "generator", "power outage", "traffic", "go-slow"],
+    "entertainment": ["Nollywood", "Burna Boy", "Wizkid", "BBNaija", "owambe", "Aso Ebi", "DJ Cuppy", "Davido"],
+    "cities": ["Lagos", "Abuja", "Port Harcourt", "Ibadan", "Kano", "Enugu", "Benin", "Calabar"]
+  },
+  "cultural_notes": {
+    "greetings": ["how far", "how you dey", "good afternoon o", "wetin dey happen"],
+    "frustration_signals": ["NEPA", "traffic", "fuel scarcity", "network", "heat"],
+    "pride_signals": ["Naija", "Giant of Africa", "made in Nigeria", "local content"]
+  },
+  "seeding_documents": [
+    "Nigerian jollof rice is famously prepared with a smoky party flavor, often cooked over open wood fires.",
+    "Danfo buses are the yellow commercial buses that dominate Lagos roads, known for aggressive driving and loud conductors.",
+    "NEPA and PHCN refer to Nigeria's power companies; 'UP NEPA!' is a joyful cry when electricity returns after an outage.",
+    "Suya is spicy grilled meat sold by mallams on street corners, typically beef or chicken with yaji spice.",
+    "Nollywood is the second largest film industry by volume, producing thousands of movies annually across Nigeria.",
+    "Owambe parties are lavish Yoruba celebrations with Aso Ebi uniforms, live bands, and abundant jollof rice.",
+    "Third Mainland Bridge connects Lagos Island to the mainland and is infamous for heavy traffic during rush hour.",
+    "Fuel scarcity is a recurring issue in Nigeria, leading to long queues at petrol stations and generator dependence.",
+    "Burna Boy and Wizkid are Grammy-recognized Nigerian artists who have brought Afrobeats to global audiences.",
+    "Bole (roasted plantain) and fish is a popular street food in Port Harcourt, usually served with spicy pepper sauce."
+  ]
+}
